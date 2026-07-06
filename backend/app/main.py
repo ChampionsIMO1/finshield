@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.auth import router as auth_router
+from app.routes.transactions import router as transactions_router
 
 app = FastAPI(title="SphinxGuard API", version="1.0.0")
 
