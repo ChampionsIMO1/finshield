@@ -25,7 +25,7 @@ def get_plaid_client():
     return PlaidApi(ApiClient(configuration))
 
 def get_supabase():
-    return create_client(settings.supabase_url, settings.supabase_key)
+    return create_client(settings.supabase_url, settings.supabase_service_key)
 
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
@@ -67,4 +67,4 @@ def exchange_token(public_token: str, user = Depends(get_current_user)):
         supabase.table("accounts").insert(accounts).execute()
         return {"message": "Account linked successfully!"}
     except:
-        raise HTTPException(status_code=400, detail="Unable to link account.")
+        raise HTTPException(status_code=400, detail="Unable to link account")

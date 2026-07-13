@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     plaid_env: str = "sandbox"
     openai_api_key: str = ""
     jwt_secret: str = "changeme"
+    supabase_service_key: str = ""
 
     class Config:
         env_file = str(ROOT_DIR / ".env")

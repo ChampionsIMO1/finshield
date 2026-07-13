@@ -67,5 +67,5 @@ def score_transaction(transaction: TransactionInput):
             "top_reasons": [{"feature": k, "impact": float(v)} for k, v in top_reasons]
         }
     
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    except:
+        raise HTTPException(status_code=400, detail="Could not determine fraud score")

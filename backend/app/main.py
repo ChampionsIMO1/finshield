@@ -4,6 +4,7 @@ from app.routes.auth import router as auth_router
 from app.routes.transactions import router as transactions_router
 from app.routes.plaid import router as plaid_router
 from app.routes.fraud import router as fraud_router
+from app.routes.sync import router as sync_router
 
 app = FastAPI(title="SphinxGuard API", version="1.0.0")
 
@@ -19,6 +20,7 @@ app.include_router(auth_router)
 app.include_router(transactions_router)
 app.include_router(plaid_router)
 app.include_router(fraud_router)
+app.include_router(sync_router)
 
 @app.get("/")
 def root():
