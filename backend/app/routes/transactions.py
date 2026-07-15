@@ -7,7 +7,7 @@ router = APIRouter(prefix="/transactions", tags=["transactions"])
 security = HTTPBearer()
 
 def get_supabase():
-    return create_client(settings.supabase_url, settings.supabase_key)
+    return create_client(settings.supabase_url, settings.supabase_service_key)
 
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
@@ -35,5 +35,5 @@ def get_transactions(user = Depends(get_current_user)):
             "transactions": transactions.data,
             "fraud_scores": fraud_scores.data,
         }
-    except:
-        raise HTTPException(status_code=400, detail="Unable to get current users transactions")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

@@ -10,6 +10,11 @@ from plaid.model.country_code import CountryCode
 from plaid.model.link_token_create_request import LinkTokenCreateRequest
 from plaid.model.link_token_create_request_user import LinkTokenCreateRequestUser
 from plaid.model.item_public_token_exchange_request import ItemPublicTokenExchangeRequest
+from pydantic import BaseModel
+
+
+class ExchangeTokenRequest(BaseModel):
+    public_token: str
 
 router = APIRouter(prefix="/plaid", tags=["plaid"])
 security = HTTPBearer()
@@ -53,18 +58,19 @@ def create_link_token(user = Depends(get_current_user)):
         raise HTTPException(status_code=400, detail="Link token could not be created")
 
 @router.post("/exchange-token")
-def exchange_token(public_token: str, user = Depends(get_current_user)):
+def exchange_token(body: ExchangeTokenRequest, user = Depends(get_current_user)):
     try:
         supabase = get_supabase()
         client = get_plaid_client()
-        response = client.item_public_token_exchange(ItemPublicTokenExchangeRequest(public_token=public_token))
+        response = client.item_public_token_exchange(ItemPublicTokenExchangeRequest(public_token=body.public_token))
         access_token = response["access_token"]
-        accounts = {
+
+        supabase.table("accounts").upsert({
             "user_id": str(user.id),
             "plaid_access_token": access_token,
             "plaid_account_id": "pending"
-        }
-        supabase.table("accounts").insert(accounts).execute()
+        }, on_conflict="plaid_account_id").execute()
+
         return {"message": "Account linked successfully!"}
     except:
         raise HTTPException(status_code=400, detail="Unable to link account")

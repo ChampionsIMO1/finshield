@@ -80,7 +80,7 @@ def user_transactions(user = Depends(get_current_user)):
             is_flagged = bool(fraud_score > 0.5)
 
             # save transaction
-            transaction_row = supabase.table("transactions").insert({
+            transaction_row = supabase.table("transactions").upsert({
                 "user_id": str(user.id),
                 "account_id": account.data[0]["id"],
                 "plaid_transaction_id": transaction["transaction_id"],
@@ -89,7 +89,7 @@ def user_transactions(user = Depends(get_current_user)):
                 "category": transaction["category"][0] if transaction.get("category") else "Unknown",
                 "date": str(transaction["date"]),
                 "currency": transaction.get("iso_currency_code") or "CAD"
-            }).execute()
+            }, on_conflict="plaid_transaction_id").execute()
 
             transaction_id = transaction_row.data[0]["id"]
 
@@ -105,5 +105,5 @@ def user_transactions(user = Depends(get_current_user)):
             synced += 1
         
         return {"message": f"Synced {synced} transactions successfully"}
-    except:
-        raise HTTPException(status_code=400, detail="Unable to sync transactions")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
