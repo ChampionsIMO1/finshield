@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     openai_api_key: str = ""
     jwt_secret: str = "changeme"
     supabase_service_key: str = ""
+    gemini_api_key: str = ""
 
     class Config:
         env_file = str(ROOT_DIR / ".env")
