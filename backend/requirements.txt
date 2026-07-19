@@ -33,13 +33,10 @@ hyperframe==6.1.0
 idna==3.18
 iniconfig==2.3.0
 joblib==1.5.3
-llvmlite==0.48.0
 multidict==6.7.1
 narwhals==2.23.0
 nulltype==2.3.1
-numba==0.66.0
 numpy==2.4.6
-nvidia-nccl-cu12==2.30.7
 packaging==26.2
 pandas==3.0.3
 passlib==1.7.4
@@ -67,7 +64,6 @@ realtime==2.31.0
 requests==2.34.2
 rsa==4.9.1
 scikit-learn==1.9.0
-scipy==1.18.0
 shap==0.52.0
 six==1.17.0
 slicer==0.0.8
