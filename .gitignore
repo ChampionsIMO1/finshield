@@ -18,9 +18,7 @@ node_modules/
 .next/
 out/
 
-# ml models
-ml/models/*.pkl
-ml/models/*.joblib
+# ml
 ml/data/*.csv
 
 # misc
